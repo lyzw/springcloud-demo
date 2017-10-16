@@ -1,0 +1,8 @@
+rootProject.name = 'springcloud-demo'
+include 'springcloud-demo-config'
+include 'springcloud-demo-common'
+include 'springcloud-demo-client'
+include 'springcloud-demo-discovery'
+include 'springcloud-demo-biz'
+include 'server'
+

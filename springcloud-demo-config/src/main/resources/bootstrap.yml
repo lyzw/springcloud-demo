@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: configuration
+  cloud:
+    config:
+      uri: ${SPRING_CONFIG_URI:http://localhost:9001}
+      server:
+        git:
+          #具体的git的地址
+          uri: http://120.27.209.65:90/zhouwei/application-config.git
+          #根据客户端的项目名称来搜索具体的文件夹
+          search-paths: '{application}'
+          username: zhouwei
+          password: zhouwei123
+          #从spring cloud上看说是可以直接用本地的方式访问，但好像没用
+  #          native:
+  #            search-locations: file:///D:/workspace/configclient/src/main/resources/
+server:
+  port: 9001
+eureka:
+  client:
+    serviceUrl:
+          defaultZone: http://localhost:9000/eureka/ #eureka服务注册地址
+
+

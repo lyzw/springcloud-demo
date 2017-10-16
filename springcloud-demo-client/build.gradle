@@ -1,0 +1,24 @@
+group 'com.zhouw'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+def  junitVersion = "4.12"
+def  springCloudVersion = "1.3.2.RELEASE"
+def  springBootVersion = "1.5.4.RELEASE"
+
+
+
+
+task "createJavaProject" << {
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}

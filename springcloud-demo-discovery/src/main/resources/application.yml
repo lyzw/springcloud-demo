@@ -1,0 +1,18 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: discovery
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+      registerWithEureka: false  #是否将eureka自身作为应用注册到eureka注册中心
+      fetchRegistry: false       #为true时，可以启动，但报异常：Cannot execute request on any known server
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+management:
+  security:
+    #management.security.enabled默认为ture，开启管理的安全，如果设置为false则可以直接使用接口的方式获取到具体的配置信息
+    enabled: false
