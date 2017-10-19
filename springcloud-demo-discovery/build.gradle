@@ -10,12 +10,8 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
-
 }
-
-
 
 task "createJavaProject" << {
     sourceSets*.java.srcDirs*.each { it.mkdirs() }

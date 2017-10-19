@@ -5,4 +5,5 @@ include 'springcloud-demo-client'
 include 'springcloud-demo-discovery'
 include 'springcloud-demo-biz'
 include 'server'
+include 'webcommon'
 

@@ -10,6 +10,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +40,7 @@ public class HttpsUtil {
         try {
             content = str.getBytes(charset);
             SSLContext ctx = SSLContext.getInstance("TLS");
-            ctx.init(new KeyManager[0], new TrustManager[] { new DefaultTrustManager() }, new SecureRandom());
+            ctx.init(new KeyManager[0], new TrustManager[]{new DefaultTrustManager()}, new SecureRandom());
             SSLContext.setDefault(ctx);
 
 
@@ -62,8 +63,8 @@ public class HttpsUtil {
 //            log.error("REQUEST_RESPONSE_ERROR, URL = " + url, e);
         } finally {
             try {
-                if (out != null)out.close();
-                if (conn != null)conn.disconnect();
+                if (out != null) out.close();
+                if (conn != null) conn.disconnect();
             } catch (Exception e) {
 //                log.error("REQUEST_RESPONSE_ERROR, URL = " + url, e);
             }
@@ -73,34 +74,35 @@ public class HttpsUtil {
         return rsp;
     }
 
-    public static String get(String path) throws Exception{
-        HttpsURLConnection httpConn=null;
-        BufferedReader in=null;
+    public static String get(String path) throws Exception {
+        HttpsURLConnection httpConn = null;
+        BufferedReader in = null;
         try {
-            URL url=new URL(path);
-            httpConn=(HttpsURLConnection)url.openConnection();
+            URL url = new URL(path);
+            httpConn = (HttpsURLConnection) url.openConnection();
 
 
             //读取响应
-            if(httpConn.getResponseCode()==200){
-                StringBuffer content=new StringBuffer();
-                String tempStr="";
-                in=new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
-                while((tempStr=in.readLine())!=null){
+            if (httpConn.getResponseCode() == 200) {
+                StringBuffer content = new StringBuffer();
+                String tempStr = "";
+                in = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+                while ((tempStr = in.readLine()) != null) {
                     content.append(tempStr);
                 }
                 return content.toString();
-            }else{
+            } else {
 //                log.error("请求出现问题");
             }
         } catch (IOException e) {
 //            log.error("IOException:", e.getMessage(),e);
-        }finally{
+        } finally {
             in.close();
             httpConn.disconnect();
         }
         return null;
     }
+
     public static String doDelete(String url, String str) {
 
 
@@ -113,11 +115,11 @@ public class HttpsUtil {
         try {
             content = str.getBytes(charset);
             SSLContext ctx = SSLContext.getInstance("TLS");
-            ctx.init(new KeyManager[0], new TrustManager[] { new DefaultTrustManager() }, new SecureRandom());
+            ctx.init(new KeyManager[0], new TrustManager[]{new DefaultTrustManager()}, new SecureRandom());
             SSLContext.setDefault(ctx);
 
 
-            conn = getConnection(new URL(url),"DELETE", ctype);
+            conn = getConnection(new URL(url), "DELETE", ctype);
             conn.setHostnameVerifier(new HostnameVerifier() {
 
 
@@ -138,8 +140,8 @@ public class HttpsUtil {
 
 
             try {
-                if (out != null)out.close();
-                if (conn != null)conn.disconnect();
+                if (out != null) out.close();
+                if (conn != null) conn.disconnect();
             } catch (Exception e) {
 //                log.error("REQUEST_RESPONSE_ERROR, URL = " + url, e);
             }
@@ -154,20 +156,19 @@ public class HttpsUtil {
     private static class DefaultTrustManager implements X509TrustManager {
 
 
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
+
         public X509Certificate[] getAcceptedIssuers() {
             return null;
         }
 
     }
 
-    private static HttpsURLConnection getConnection(URL url, String method, String ctype)
-            throws IOException {
+    private static HttpsURLConnection getConnection(URL url, String method, String ctype) throws IOException {
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod(method);
         conn.setDoInput(true);
@@ -234,8 +235,26 @@ public class HttpsUtil {
         return charset;
     }
 
-    public static void main(String[] args) {
-        System.out.println(doPost("https://118.178.152.110:443/hz/personalIdentityAuthentication",
-                "{\"busicode\":\"60019\",\"mercode\":\"201703280000002\",\"orgcode\":\"600000020170418\",\"proname\":\"幸福钱庄借贷平台\",\"reqtime\":\"20170705114723\",\"userId\":\"460004198610250830\",\"userName\":\"王天平\",\"sign\":\"9BDA438D5FE37142B249DBBC5DC2F15B\"}"));
+    /**
+     * 从HttpServletRequest中获取body体中的数据
+     *
+     * @param request 请求
+     * @return 请求体中的内容
+     * @throws IOException IO异常
+     */
+    public static String getRequestBody(HttpServletRequest request) throws IOException {
+        if (request == null) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        InputStream inputStream = request.getInputStream();
+        if (inputStream == null){
+            return null;
+        }
+        byte[] bytes = new byte[1024];
+        while (inputStream.read(bytes) != -1) {
+            sb.append(new String(bytes));
+        }
+        return sb.toString();
     }
 }
