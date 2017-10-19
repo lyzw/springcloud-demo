@@ -56,43 +56,42 @@ project(':springcloud-demo-common'){
     }
 }
 
-project(':springcloud-demo-config'){
-    dependencies{
-        compile(project(":springcloud-demo-common"))
+project(':webcommon'){
+    dependencies {
         testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
         testCompile group: 'org.springframework.boot', name: "spring-boot-starter-test", version: "${springBootVersion}"
+        compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
+        compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
         compile group: 'org.springframework.cloud', name: "spring-cloud-starter-config", version: "${springCloudVersion}"
         compile group: "org.springframework.cloud", name: "spring-cloud-config-server", version: "${springCloudVersion}"
         compile group: "org.springframework.cloud", name: "spring-cloud-starter-eureka", version: "${springCloudVersion}"
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
         compile group: 'com.alibaba', name: 'fastjson', version: '1.2.37'
+        compile group: "javax.servlet", name: "javax.servlet-api", version: "3.1.0"
+
+    }
+}
+
+project(':springcloud-demo-config'){
+    dependencies{
+        compile(project(":springcloud-demo-common"))
+        compile(project(":webcommon"))
+
     }
 }
 
 project(':springcloud-demo-discovery'){
     dependencies{
         compile(project(":springcloud-demo-common"))
-        testCompile group: 'org.springframework.boot', name: "spring-boot-starter-test", version: "${springBootVersion}"
-        compile group: 'org.springframework.cloud', name: "spring-cloud-starter-eureka-server", version: "${springCloudVersion}"
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
-        compile group: "javax.servlet", name: "javax.servlet-api", version: "3.1.0"
+        compile(project(":webcommon"))
     }
 }
 
 project(':springcloud-demo-client'){
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
-        testCompile group: 'org.springframework.boot', name: "spring-boot-starter-test", version: "${springBootVersion}"
-        compile group: 'org.springframework.cloud', name: "spring-cloud-starter-config", version: "${springCloudVersion}"
-        compile group: 'org.springframework.cloud', name: 'spring-cloud-config-client', version: "${springCloudVersion}"
-        compile group: "org.springframework.cloud", name: "spring-cloud-config-server", version: "${springCloudVersion}"
-        compile group: "org.springframework.cloud", name: "spring-cloud-starter-eureka", version: "${springCloudVersion}"
-
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
-
+        compile(project(":springcloud-demo-common"))
+        compile(project(":webcommon"))
     }
 
 }
